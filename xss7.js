@@ -33,3 +33,5 @@ async function exploit() {
         leak(e.message);
     }
 }
+
+exploit();
